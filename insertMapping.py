@@ -6,7 +6,7 @@ def insertData(address, isVerified):
         connection = mysql.connector.connect(host='localhost',
                                              port='3306',
                                              user='root',
-                                             password='yathin017',
+                                             password='password',
                                              database='test_schema')
 
         cursor = connection.cursor()

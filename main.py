@@ -5,7 +5,7 @@ import math, random
 con = connector.connect(host='localhost',
                         port='3306',
                         user='root',
-                        password='yathin017',
+                        password='password',
                         database='test_schema')
 
 def write_file(data, filename):
