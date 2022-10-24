@@ -1,11 +1,11 @@
 import mysql.connector as connector
 from datetime import date
-import random
+import math, random
 
 con = connector.connect(host='localhost',
                         port='3306',
                         user='root',
-                        password='password',
+                        password='yathin017',
                         database='test_schema')
 
 def write_file(data, filename):
@@ -29,6 +29,7 @@ def check_rand():
     else:
         check_rand()
 
+
 user_aadhar = input("Enter Aadhar number: ").lower()
 query = 'select * from new_table where aadhar_number = {}'.format(user_aadhar)
 cur = con.cursor()
@@ -36,9 +37,9 @@ cur.execute(query)
 data = []
 for row in cur:
     data = [row[0], row[1], row[2], row[3],
-            row[4], row[5], row[6], row[7], row[8]]
+            row[4], row[5], row[6], row[7], row[8], row[9]]
 
-file_name = "D:\Projects\IdentityVerification\storage\image.png"
+file_name = "D:\Projects\Advanced Identity Verification\storage\image.png"
 write_file(row[8], file_name)
 print(data)
 
@@ -59,8 +60,10 @@ if age(data[7])>=18:
             check_rand()
 
             print(questions[rand])
+            # Capture and verify picture
             answer = input().lower()
-
+            # Capture and verify picture
+            
             if rand == 0:
                 if(answer == data[2].lower()):
                     score+=1
@@ -125,6 +128,8 @@ if age(data[7])>=18:
                     print("Retry")
                     break
         if score>=3:
+            address = row[9]
+            query = 'INSERT INTO mapping_table(isVerified) VALUES (1) where address = {}'.format(address)
             print("KYC Verified")
         else:
             print("KYC Not Verified")   
