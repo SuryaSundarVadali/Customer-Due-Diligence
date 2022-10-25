@@ -4,8 +4,7 @@ import math, random
 import face_recognition
 import cv2
 import numpy as np
-import os
-import glob
+import os, sys, glob
 import matplotlib.pyplot as plt
 
 con = connector.connect(host='localhost',
@@ -35,6 +34,11 @@ def check_rand():
     else:
         check_rand()
 
+def capture_img():
+    video_capture = cv2.VideoCapture(0)
+    ret, frame = video_capture.read()
+    small_frame = cv2.resize(frame, (0, 0), fx=1, fy=1)
+    rgb_small_frame = small_frame[:, :, ::-1]
 
 user_aadhar = input("Enter Aadhar number: ").lower()
 query = 'select * from new_table where aadhar_number = {}'.format(user_aadhar)
@@ -45,9 +49,10 @@ for row in cur:
     data = [row[0], row[1], row[2], row[3],
             row[4], row[5], row[6], row[7], row[8], row[9]]
 
-file_name = "D:\Projects\Advanced Identity Verification\storage\image.png"
-write_file(row[8], file_name)
-print(data)
+# Saving image 5 times in storage
+for i in range(5):
+    file_name = "D:\Projects\Advanced Identity Verification\storage\image{}.png".format(i)
+    write_file(row[8], file_name)
 
 questions = ["What is your first name?", "What is your last name?", "What is the last 4 characters of your Aadhar?", "What is the last 4 characters of your PAN?", "What is the year of your birth?", "What is the month of your birth?", "What is the day of your birth?",
              "What is your father's first name?", "What is your mother's first name?"]
@@ -56,27 +61,27 @@ score = 0
 
 if age(data[7])>=18:
     
-    # Fetch Image and store it
-    img_bgr = face_recognition.load_image_file('storage\image.png')
+    # Fetch Image
+    img_bgr = face_recognition.load_image_file('storage\image0.png')
     img_rgb = cv2.cvtColor(img_bgr,cv2.COLOR_BGR2RGB)
     face = face_recognition.face_locations(img_rgb)[0]
     face_encode = face_recognition.face_encodings(img_rgb)[0]
     
     # Capture Image using OpenCV
-    video_capture = cv2.VideoCapture(0)
-    while True:
-        ret, frame = video_capture.read()
-        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-        rgb_small_frame = small_frame[:, :, ::-1]        
-        test_encode = face_recognition.face_encodings(regb_small_frame)[0]
+    capture_img()
+    while( len(face_recognition.face_encodings(rgb_small_frame))<1):
+        capture_img()
+    test_encode = face_recognition.face_encodings(rgb_small_frame)[0]
+    print('Image is captured')
 
-    # Verify stored image with present image using OpenCV and AI
-    if face_recognition.compare_faces([face_encode],test_encode):
-      continue
-     else:
-      exit()
+    # Verify stored image with present image using OpenCV
+    print(face_recognition.compare_faces([face_encode],test_encode))
+    cv2.rectangle(img_bgr,(face[3],face[0]),(face[1],face[2]),(255,0,255),1)
+    cv2.imshow("a",test_encode)
+    cv2.waitKey(1)
+    if face_recognition.compare_faces([face_encode],test_encode) != [True]:
+        sys.exit("Issue with face detection")
       
-    
     user_pan = input("Enter PAN number: ").upper()
     if data[1]==user_pan:
         for i in range(3):
