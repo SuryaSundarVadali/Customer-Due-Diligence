@@ -1,6 +1,12 @@
 import mysql.connector as connector
 from datetime import date
 import math, random
+import face_recognition
+import cv2
+import numpy as np
+import os
+import glob
+import matplotlib.pyplot as plt
 
 con = connector.connect(host='localhost',
                         port='3306',
@@ -51,8 +57,25 @@ score = 0
 if age(data[7])>=18:
     
     # Fetch Image and store it
+    img_bgr = face_recognition.load_image_file('storage\image.png')
+    img_rgb = cv2.cvtColor(img_bgr,cv2.COLOR_BGR2RGB)
+    face = face_recognition.face_locations(img_rgb)[0]
+    face_encode = face_recognition.face_encodings(img_rgb)[0]
+    
     # Capture Image using OpenCV
+    video_capture = cv2.VideoCapture(0)
+    #while True:
+        ret, frame = video_capture.read()
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        rgb_small_frame = small_frame[:, :, ::-1]        
+        test_encode = face_recognition.face_encodings(regb_small_frame)[0]
+
     # Verify stored image with present image using OpenCV and AI
+    if face_recognition.compare_faces([face_encode],test_encode):
+      continue
+     else:
+      exit()
+      
     
     user_pan = input("Enter PAN number: ").upper()
     if data[1]==user_pan:
