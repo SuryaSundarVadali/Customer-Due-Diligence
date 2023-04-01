@@ -39,5 +39,4 @@ def insertData(aadhar_number, pan_number, first_name, middle_name, last_name, fa
             print("MySQL connection is closed")
 
 
-insertData("123456781234", "ABC1234", "Yathin", "Prakash", "Kethepalli", "Sarath",
-           "Sujatha", "2002-08-17", "D:\Projects\Advanced Identity Verification\yathin_prakash.png", "0xE6707721ad79f4519f80D95ef4D961b60893CD76")
+insertData("123456781234", "ABC1234", "Yathin", "Prakash", "Kethepalli", "Sarath", "Sujatha", "2002-08-17", "D:\Projects\Advanced Identity Verification\yathin_prakash.png", "0xE6707721ad79f4519f80D95ef4D961b60893CD76")
