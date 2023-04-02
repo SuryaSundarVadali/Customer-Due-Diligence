@@ -1,0 +1,13 @@
+CREATE TABLE `new_table` (
+  `aadhar_number` varchar(12) NOT NULL,
+  `pan_number` varchar(45) DEFAULT NULL,
+  `first_name` varchar(45) DEFAULT NULL,
+  `middle_name` varchar(45) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `father_name` varchar(45) DEFAULT NULL,
+  `mother_name` varchar(45) DEFAULT NULL,
+  `dob` date DEFAULT NULL,
+  `profile_image` longblob,
+  `address` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`aadhar_number`)
+)
