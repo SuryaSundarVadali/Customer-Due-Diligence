@@ -1,0 +1,6 @@
+CREATE TABLE `mapping_table` (
+  `address` varchar(100) NOT NULL,
+  `isVerified` tinyint NOT NULL DEFAULT '0',
+  PRIMARY KEY (`address`),
+  UNIQUE KEY `address_UNIQUE` (`address`)
+)
