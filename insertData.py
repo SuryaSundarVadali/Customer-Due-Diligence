@@ -21,7 +21,6 @@ def insertData(aadhar_number, pan_number, first_name, middle_name, last_name, fa
                           (aadhar_number, pan_number, first_name, middle_name, last_name, father_name, mother_name, dob, profile_image, address) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
         profileImage = convertToBinaryData(profile_image)
-
         # Convert data into tuple format
         insert_tuple = (aadhar_number, pan_number, first_name, middle_name,
                         last_name, father_name, mother_name, dob, profileImage, address)
@@ -39,4 +38,4 @@ def insertData(aadhar_number, pan_number, first_name, middle_name, last_name, fa
             print("MySQL connection is closed")
 
 
-insertData("123456781234", "ABC1234", "Yathin", "Prakash", "Kethepalli", "Sarath", "Sujatha", "2002-08-17", "D:\Projects\Advanced Identity Verification\yathin_prakash.png", "0xE6707721ad79f4519f80D95ef4D961b60893CD76")
+insertData("123456781234", "ABC1234", "Surya", "Sundar", "vadali", "pratap", "srivani", "2004-09-9", 'D:\Surya\College\Blockchain\KYC\Customer-Due-Diligence\photo.jpg', "0x93f189A1558a979B7D3dC0CF349BD4DD08a87c91")

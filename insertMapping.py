@@ -28,4 +28,4 @@ def insertData(address, isVerified):
             connection.close()
             print("MySQL connection is closed")
 
-insertData("0xB245B4DBEe83064CDd975D31Af9edA5f6a4508A4", 0)
+insertData("0x93f189A1558a979B7D3dC0CF349BD4DD08a87c91", 0)

@@ -42,30 +42,55 @@ def verify_img():
     # Fetch Image
     img_bgr = face_recognition.load_image_file('storage\\temp_image.png')
     img_rgb = cv2.cvtColor(img_bgr,cv2.COLOR_BGR2RGB)
-    face = face_recognition.face_locations(img_rgb)[0]
-    face_encode = face_recognition.face_encodings(img_rgb, model='cnn')[0]
+    face = face_recognition.face_locations(img_rgb)
+    face_encode = face_recognition.face_encodings(img_rgb, model='cnn')
     # Capture Image using OpenCV
     video_capture = cv2.VideoCapture(0)
     ret, frame = video_capture.read()
     small_frame = cv2.resize(frame, (0, 0), fx=1, fy=1)
-    rgb_small_frame = small_frame[:, :, ::-1]
-    while( len(face_recognition.face_encodings(rgb_small_frame))<1):
-        video_capture = cv2.VideoCapture(0)
+    rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1])
+
+    if len(face_encode) > 0:
+        face = face[0]
+        face_encode = face_encode[0]
+        print('Stored face found.')
+    else:
+        print('No face found in stored image.')
+        return
+
+    while True:
         ret, frame = video_capture.read()
-        small_frame = cv2.resize(frame, (0, 0), fx=1, fy=1)
-        rgb_small_frame = small_frame[:, :, ::-1]
-    test_encode = face_recognition.face_encodings(rgb_small_frame)[0]
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1])
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encodings = face_recognition.face_encodings(rgb_small_frame,model='cnn')
+        
+        if len(face_locations) > 0:
+            break
+
+    test_encode = face_encodings[0]
     print('Image is captured')
-    # Verify stored image with present image using OpenCV
-    print(face_recognition.compare_faces([face_encode],test_encode))
-    cv2.rectangle(img_bgr,(face[3],face[0]),(face[1],face[2]),(255,0,255),1)
-    cv2.imshow("a",test_encode)
-    cv2.waitKey(1)
-    if face_recognition.compare_faces([face_encode],test_encode) != [True]:
-        remove_img()
+
+    matches = face_recognition.compare_faces([face_encode], test_encode)
+    face_distances = face_recognition.face_distance([face_encode], test_encode)
+
+    if matches[0]:
+        print('Face matched.')
+    else:
+        print('Face did not match.')
+        remove_img()  # Assuming this function removes the stored image
         sys.exit("Issue matching the face")
 
 
+    # Verify stored image with present image using OpenCV
+    result = face_recognition.compare_faces([face_encode], test_encode)
+    print(result)
+    cv2.rectangle(img_bgr, (face[3], face[0]), (face[1], face[2]), (255, 0, 255), 1)
+    cv2.imshow("a", small_frame)  # Display the frame, not the encoding
+    cv2.waitKey(1)
+    if not result[0]:  # If the first item in the result list is False
+        remove_img()
+        sys.exit("Issue matching the face")
 user_aadhar = input("Enter Aadhar number: ").lower()
 query = 'select * from new_table where aadhar_number = {}'.format(user_aadhar)
 cur = con.cursor()
