@@ -38,4 +38,16 @@ def insertData(aadhar_number, pan_number, first_name, middle_name, last_name, fa
             print("MySQL connection is closed")
 
 
-insertData("123456781234", "ABC1234", "Surya", "Sundar", "vadali", "pratap", "srivani", "2004-09-9", 'D:\Surya\College\Blockchain\KYC\Customer-Due-Diligence\photo.jpg', "0x93f189A1558a979B7D3dC0CF349BD4DD08a87c91")
+aadhar_number = input("Enter Aadhar Number: ")
+pan_number = input("Enter PAN Number: ")
+first_name = input("Enter First Name: ")
+middle_name = input("Enter Middle Name: ")
+last_name = input("Enter Last Name: ")
+father_name = input("Enter Father's Name: ")
+mother_name = input("Enter Mother's Name: ")
+dob = input("Enter Date of Birth (YYYY-MM-DD): ")
+profile_image = input("Enter Profile Image Path: ")
+address = input("Enter Address: ")
+
+# Insert the data
+insertData(aadhar_number, pan_number, first_name, middle_name, last_name, father_name, mother_name, dob, profile_image, address)
